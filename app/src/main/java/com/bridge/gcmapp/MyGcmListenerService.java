@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,31 +13,12 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GcmListenerService;
 
-import java.util.ArrayList;
-
 /**
  * Created by sec on 2016-05-23.
  */
 public class MyGcmListenerService extends GcmListenerService {
-/*    public MyGcmListenerService(){
-
-    }
-``
-
-@Override
-public void onMessageReceived(String from, Bundle data){
-   String message = data.getString("message");
-    Log.d("test", "From: " + from);
-    Log.d("test", "Message: " + message);
-
-    sendNotification(message);
-}
-private void sendNotification(String str){
-
-}*/
-    ArrayList<Song> al = new ArrayList<Song>();
     private static final String TAG = "MyGcmListenerService";
-    SecondActivity secondActivity = new SecondActivity();
+
     /**
      *
      * @param from SenderID 값을 받아온다.
@@ -48,41 +28,11 @@ private void sendNotification(String str){
     public void onMessageReceived(String from, Bundle data) {
         String title = data.getString("title");
         String message = data.getString("message");
-
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Title: " + title);
         Log.d(TAG, "Message: " + message);
+        Log.d(TAG, "onMessageReceived 가 호출됨 !!!!!!!!!!");
 
-        al.add(new Song("aaa", "ggg"));
-
-
-        final MyAdapter adapter = new MyAdapter(
-                getApplicationContext(),
-                R.layout.row,
-                al);
-        //secondActivity.lv.setAdapter(adapter);
-
-        BroadcastReceiver br;
-        final String BROADCAST_ACTION = "BROADCAST_ACTION";
-        br = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-/*                Log.d(TAG, "Frommmmm: " + secondActivity.lv);
-                secondActivity.lv.setAdapter(adapter);*/
-                adapter.notifyDataSetChanged();
-            }
-        };
-        IntentFilter intentFilter = new IntentFilter(BROADCAST_ACTION);
-        registerReceiver(br, intentFilter);
-
-        Intent intent = new Intent(BROADCAST_ACTION);
-        sendBroadcast(intent);
-
-//        final ArrayAdapter<Song> arrayAdapter = new ArrayAdapter<Song>(this,
-//                android.R.layout.simple_list_item_1, al);
-
-
-        // GCM으로 받은 메세지를 디바이스에 알려주는 sendNotification()을 호출한다.
         sendNotification(title, message);
     }
 
@@ -92,14 +42,18 @@ private void sendNotification(String str){
      * @param message
      */
     private void sendNotification(String title, String message) {
-        Intent intent = new Intent(this, MainActivity.class);
+//        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, SecondActivity.class);
+
+        Log.d(TAG, "sendNotification: !!!!!!!!!!!!!!!!" );
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.aim_bleu)
+                .setSmallIcon(R.drawable.ggp)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
@@ -110,7 +64,15 @@ private void sendNotification(String str){
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+        SecondActivity.addList(title, message);
     }
 
+
+
+    @Override
+    public void unregisterReceiver(BroadcastReceiver receiver) {
+        super.unregisterReceiver(receiver);
+    }
 }
 

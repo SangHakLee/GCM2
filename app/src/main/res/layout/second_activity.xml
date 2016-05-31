@@ -3,26 +3,36 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="공지사항"
-        android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-<!--    <EditText
+    <!--    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/edtItem"/>-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="메인 공지사항"
+        android:id="@+id/textView"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:textSize="20sp" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnAdd"
-        android:text="추가"/>
+        android:text="추가"
+        android:visibility="gone" />
     <ListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="443dp"
+        android:layout_margin="20dp"
+        android:dividerHeight="7dp"
+        android:divider="#ffffff"
+        android:fastScrollAlwaysVisible="true"
+        android:background="#f6f6f6"
+        android:contextClickable="true">
     </ListView>
 
 </LinearLayout>
